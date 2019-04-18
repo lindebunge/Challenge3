@@ -1,0 +1,176 @@
+
+/* Algemene CSS */
+
+/* De witte rand van de body weghalen en de font-family aanpassen*/
+body {
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    background-image: url("../images/mars.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    color: white;
+}
+
+/* de grid-container waar alle blokken inzitten */
+.grid-container {
+    display: grid;
+    margin-left: 10%;
+    margin-right: 10%;
+    grid-template-columns: 25% 25% 25% 25%;
+
+    grid-template-areas:
+            'titel1 titel2 titel3 titel4'
+            'ondertitel ondertitel ondertitel ondertitel'
+            'blok1 blok2 blok3 blok4'
+            'blok5 blok6 blok7 blok8'
+            'blok9 blok10 blok11 blok12'
+            'blok13 blok14 blok15 blok16'
+            'blok17 blok18 blok19 blok20'
+            'blok21 blok22 blok23 blok24'
+;
+}
+
+/*Het spaceX dikker en groter maken*/
+#spacex {
+    grid-column-start: titel1;
+    grid-column-end: titel4;
+    grid-row: titel1;
+
+    text-align: center;
+    padding-top: 5%;
+
+    font-size: 600%;
+    font-weight: bolder;
+}
+
+/*De ondertitel groter maken*/
+#ondertitel {
+    grid-column: ondertitel;
+    grid-row: ondertitel;
+
+    text-align: center;
+
+    font-size: 300%;
+}
+
+/*de tekst bij de map, met dat je moet klikken*/
+#maptekst {
+    grid-column-start: blok1;
+    grid-column-end: blok3;
+    grid-row: blok1;
+
+    text-align: center;
+}
+
+
+/*de kaart zelf, moet een height hebben anders dan is de height 0 en is hij dus niet te zien*/
+#map {
+    grid-column-start: blok5;
+    grid-column-end: blok7;
+    grid-row: blok5;
+    height: 500px;
+}
+
+/*De gegevens naast de kaart*/
+#mapdata {
+    grid-area: blok8;
+    margin-left: 10%;
+}
+
+/*De blokken met de naam, adres enz van de brewer erin moeten wat
+meer afstand hebben van elkaar, anders raakt de tekst elkaar aan*/
+.brewers {
+    padding: 20px;
+    padding-bottom: 40px;
+
+}
+
+/*Elke brewerdiv heeft zijn eigen veld in de grid zodat het mooi past*/
+#brewerdiv1 {
+    grid-column-start: blok9;
+    grid-column-end: blok12;
+    grid-row: blok9;
+}
+
+#brewerdiv2 {
+    grid-column-start: blok13;
+    grid-column-end: blok16;
+    grid-row: blok13;
+}
+
+#brewerdiv3 {
+    grid-column-start: blok17;
+    grid-column-end: blok20;
+    grid-row: blok17;
+}
+
+#brewerdiv4 {
+    grid-column-start: blok21;
+    grid-column-end: blok24;
+    grid-row: blok21;
+}
+
+
+
+/*desktop & tablet: ondertitel ernaast en de fontsizes laten kloppen*/
+@media only screen and (min-width: 900px) {
+    #spacex {
+        grid-column-start: titel1;
+        grid-column-end: titel2;
+        grid-row: titel1;
+
+        text-align: center;
+        padding-top: 5%;
+        padding-left: 15%;
+
+        font-size: 600%;
+        font-weight: bolder;
+    }
+
+    #ondertitel {
+        grid-column-start: titel3;
+        grid-column-end: titel4;
+        grid-row: titel1;
+
+        text-align: center;
+        padding-top: 5%;
+        padding-right: 15%;
+
+        font-size: 260%;
+    }
+
+    /*Zet de bardivs naast elkaar ipv onder elkaar*/
+    #brewerdiv1 {
+        grid-area: blok9;
+    }
+
+    #brewerdiv2 {
+        grid-area: blok10;
+    }
+
+    #brewerdiv3 {
+        grid-area: blok11;
+    }
+
+    #brewerdiv4 {
+        grid-area: blok12;
+    }
+}
+
+
+/*desktop: grote font zodat het niet superklein is */
+@media only screen and (min-width: 1000px) {
+    #info {
+        font-size: 200%;
+    }
+}
+
+/*kleine telefoons, maak de font nog kleiner omdat het anders niet past*/
+@media only screen and (max-width: 600px) {
+    .kopje {
+        font-size: 100%;
+    }
+}
+

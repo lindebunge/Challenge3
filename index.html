@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceX lander</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!--Het lettertype-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!--google maps api, helaas zonder key maar hij doet het toch een soort van-->
+    <!--https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl-->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <!--jQuery voor de APIs -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<!--de grid container voor het goed opmaken en responsive houden van de website-->
+<div class="grid-container">
+
+    <!--het spacex logo-->
+    <div id="spacex">SPACEX</div>
+
+    <!--de ontertitel-->
+    <div id="ondertitel">LANDING INFORMATINION PANEL</div>
+
+
+    <!--Gekopieerd van:-->
+    <!--http://thisinterestsme.com/google-maps-api-location-picker-example/-->
+    <div id="maptekst">
+        <h1>Pick a landing spot</h1>
+        <p>Click somewhere on the map to select a location. You can also drag the marker.</p>
+    </div>
+
+
+    <!--map div, met de daadwerkelijke kaart erin-->
+    <div id="map"></div>
+
+    <script type="text/javascript" src="js/map.js"></script>
+
+    <!--Hier staan alle gegevens in die bij een bepaalde locatie horen-->
+    <div id="mapdata">
+        <div>Latitude: </div>
+        <br>
+        <div id="lat" class="">0°</div>
+        <br>
+
+        <div>Longitude: </div>
+        <br>
+        <div id="lon" class="">0°</div>
+        <br>
+
+        <div>Temperature: </div>
+        <br>
+        <div id="temp" class="">0°C</div>
+        <br>
+
+        <div>Humidity: </div>
+        <br>
+        <div id="hum" class="">0%</div>
+        <br>
+
+        <div>Pressure:: </div>
+        <br>
+        <div id="pres" class="">1000 mbar</div>
+        <br>
+
+        <div>Minimal temperature: </div>
+        <br>
+        <div id="mintemp" class="">0°C</div>
+        <br>
+
+        <div>Maximal temperature: </div>
+        <br>
+        <div id="maxtemp" class="">0°C</div> <br>
+
+    </div>
+
+<!--Dit staat er express onder, zodat de opmaak beter kan zijn-->
+    <div id="brewerdiv1">
+        <div>Brewer in the vicinity: </div>
+        <br>
+        <div id="brewer1" class="">-</div> <br>
+    </div>
+
+    <div id="brewerdiv2">
+        <div>Address:  </div>
+        <br>
+        <div id="brewer2" class="">-</div> <br>
+    </div>
+
+    <div id="brewerdiv3">
+        <div>Website: </div>
+        <br>
+        <div id="brewer3" class="">-</div> <br>
+    </div>
+
+    <div id="brewerdiv4">
+        <div>Brewer in the vicinity: </div>
+        <br>
+        <div id="brewer4" class="">-</div> <br>
+    </div>
+
+</div>
+
+</body>
+
+<script>
+
+    //Deze functie haalt het weer op van een bepaalde locatie.
+    function getWeather(lat, lon) {
+
+        //In de url zit ook mijn API key
+        var url = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=d98d69a4cadebe9ba04071b984adf08a&units=metric';
+
+        // Haal de data op
+        $.get( url, function(response) {
+
+            //en zet de juiste tekst in de divjes
+            document.getElementById('temp').textContent = response.main.temp+'°C'; //temperatuur
+            document.getElementById('hum').textContent = response.main.humidity+'%'; //luchtvochtigheid
+            document.getElementById('pres').textContent = response.main.pressure+' mbar'; //druk
+
+            document.getElementById('mintemp').textContent = response.main.temp_min+'°C'; //minimale temperatuur
+            document.getElementById('maxtemp').textContent = response.main.temp_max+'°C'; //maximale temperatuur
+        });
+
+    }
+
+    function getBeer(lat, lon) {
+
+        //cors anywhere zorgt ervoor dat je API aan kan roepen vanaf een lokale computer ipv alleen van webservers.
+        //de brewerDB API zorgt ervoor dat er een brouwerij in een straal van 100 kilometer gevonden kan worden
+        var url = 'https://cors-anywhere.herokuapp.com/https://sandbox-api.brewerydb.com/v2/search/geo/point?lat='+lat+'&lng='+lon+'&radius=100&unit=km&key=097cfa7ecad8616b0b1cbc7c86486b3b';
+
+        $.get( url, function(response) {
+            //Als er geen brouwer binnen een straal van 100 km zit, dan moet alle oude data weg
+            if(response['data'] === undefined) {
+                document.getElementById('brewer1').textContent = "No brewer here";
+                document.getElementById('brewer2').textContent = "-";
+                document.getElementById('brewer3').textContent = "-";
+                document.getElementById('brewer4').textContent = "-";
+            }
+            //Als er wel 1 of meer brouwer gevonden zijn, dan zet dit de goede informatie in de juiste blokjes
+            else{
+                document.getElementById('brewer1').textContent = response['data'][0]['name']; //naam
+                document.getElementById('brewer2').textContent = response['data'][0]['streetAddress']; //adres
+                document.getElementById('brewer3').textContent = response['data'][0]['website']; //website
+                document.getElementById('brewer4').textContent = response['data'][0]['brewery']['description']; //korte omschrijving van de brouwer
+            }
+        });
+
+
+    }
+
+</script>
+
+</html>
